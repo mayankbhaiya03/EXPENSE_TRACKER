@@ -1,4 +1,10 @@
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://expense-tracker-t1l2.onrender.com";
+
+function buildUrl(path = "") {
+    const base = String(API_BASE).replace(/\/+$/, "");
+    const p = path ? (path.startsWith("/") ? path : `/${path}`) : "";
+    return `${base}${p}`;
+}
 
 export async function apiFetch(path, options = {}) {
     const token = localStorage.getItem("token");
@@ -6,20 +12,32 @@ export async function apiFetch(path, options = {}) {
     const headers = {
         "Content-Type": "application/json",
         ...(options.headers || {}),
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
     };
 
-    const res = await fetch(`${API_BASE}${path}`, {
+    const res = await fetch(buildUrl(path), {
         ...options,
-        headers,
+        headers
     });
 
     const text = await res.text();
-    const data = text ? JSON.parse(text) : null;
+    let data = null;
+
+    try {
+        data = text ? JSON.parse(text) : null;
+    } catch {
+        data = text;
+    }
 
     if (!res.ok) {
-        const err = new Error(data?.message || "API Error");
+        const message =
+            (data && data.message) ||
+            (typeof data === "string" && data) ||
+            "API Error";
+
+        const err = new Error(message);
         err.status = res.status;
+        err.response = data;
         throw err;
     }
 
