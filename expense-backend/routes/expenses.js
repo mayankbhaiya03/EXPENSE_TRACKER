@@ -8,7 +8,10 @@ const router = express.Router();
 router.get("/", auth, async (req, res) => {
     try {
         const userId = req.user.id;
-        const expenses = await Expense.find({ user: userId }).sort({ date: -1 });
+        const expenses = await Expense.find({ user: userId })
+            .sort({ date: -1 })
+            .lean();
+
         return res.json(expenses);
     } catch (err) {
         console.error(err);
@@ -40,16 +43,23 @@ router.post("/", auth, async (req, res) => {
 router.delete("/:id", auth, async (req, res) => {
     try {
         const { id } = req.params;
-        const expense = await Expense.findById(id);
-        if (!expense) return res.status(404).json({ message: "Expense not found" });
-        if (String(expense.user) !== String(req.user.id)) return res.status(403).json({ message: "Forbidden" });
-        await expense.remove();
-        return res.json({ message: "Deleted" });
+
+        const deleted = await Expense.findOneAndDelete({
+            _id: id,
+            user: req.user.id
+        });
+
+        if (!deleted) {
+            return res.status(404).json({ message: "Expense not found" });
+        }
+
+        return res.json({ message: "Expense deleted successfully" });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: "Server error" });
     }
 });
+
 
 // PUT /api/expenses/:id
 router.put("/:id", auth, async (req, res) => {

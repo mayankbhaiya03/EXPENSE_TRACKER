@@ -8,7 +8,21 @@ import expenseRoutes from "./routes/expenses.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+//RS FIX — REQUIRED for Vercel + Render working
+
+app.use(
+    cors({
+        origin: [
+            "https://expense-tracker-brown-kappa.vercel.app",
+            "http://localhost:5173",
+        ],
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+    })
+);
+
+
 app.use(express.json());
 
 // routes
@@ -17,6 +31,8 @@ app.use("/api/expenses", expenseRoutes);
 
 const PORT = process.env.PORT || 5000;
 
+
+// DATABASE + SERVER START
 const start = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URI);
