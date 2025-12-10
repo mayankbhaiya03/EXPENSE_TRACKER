@@ -41,7 +41,6 @@ _
 4. AI Budget Recommendations
 
 ---------------------------------------------LIVE DEMO----------------------------------------------
-Live Demo
 
 🎯 Try the app here:
 👉 https://expense-tracker-brown-kappa.vercel.app
