@@ -15,7 +15,8 @@ app.use(
     cors({
         origin: [
             "https://expense-tracker-brown-kappa.vercel.app",
-            "http://localhost:5173",
+            "http://localhost:5173", ,
+            "http://15.206.128.203"
         ],
         methods: ["GET", "POST", "PUT", "DELETE"],
         allowedHeaders: ["Content-Type", "Authorization"],
