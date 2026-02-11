@@ -1,9 +1,19 @@
 import Redis from "ioredis";
 
-const redis = new Redis({
-    host: process.env.REDIS_HOST || "127.0.0.1",
-    port: process.env.REDIS_PORT || 6379,
-});
+let redis;
+
+if (process.env.REDIS_URL) {
+    // Render Redis
+    redis = new Redis(process.env.REDIS_URL);
+    console.log("Using production Redis");
+} else {
+    // Local development
+    redis = new Redis({
+        host: "127.0.0.1",
+        port: 6379,
+    });
+    console.log("Using local Redis");
+}
 
 redis.on("connect", () => {
     console.log("Redis connected");
