@@ -14,14 +14,15 @@ const app = express();
 app.use(
     cors({
         origin: [
-            "https://expense-tracker-brown-kappa.vercel.app",
-            "http://localhost:5173", ,
-            "http://15.206.128.203"
+            "https://expense-tracker-eight-orcin.vercel.app",
+            "http://localhost:5173"
         ],
         methods: ["GET", "POST", "PUT", "DELETE"],
         allowedHeaders: ["Content-Type", "Authorization"],
+        credentials: true
     })
 );
+
 
 
 app.use(express.json());
