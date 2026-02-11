@@ -43,6 +43,6 @@ _
 ---------------------------------------------LIVE DEMO----------------------------------------------
 
 🎯 Try the app here:
-👉 https://expense-tracker-brown-kappa.vercel.app
+👉 https://expense-tracker-eight-orcin.vercel.app/
 
 
