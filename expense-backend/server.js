@@ -15,14 +15,12 @@ app.use(
     cors({
         origin: [
             "https://expense-tracker-eight-orcin.vercel.app",
+            "https://expense-tracker-7p9kde62t-mayanks-projects-fcdcce61.vercel.app",
             "http://localhost:5173"
         ],
-        methods: ["GET", "POST", "PUT", "DELETE"],
-        allowedHeaders: ["Content-Type", "Authorization"],
-        credentials: true
+        credentials: true,
     })
 );
-
 
 
 app.use(express.json());
